@@ -2,7 +2,7 @@ import Notiflix from 'notiflix';
 import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-let lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
+let lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 200});
 
 const formRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -26,7 +26,7 @@ function onLoadMore() {
   moreBtn.classList.add('visually-hidden');
   fetchCard().then(data => {
     renderGallery(data);
-    lightbox.refresh;
+    lightbox.refresh();
 
     if (data.hits.length === 40) {
       moreBtn.classList.remove('visually-hidden');
@@ -55,7 +55,7 @@ function onSubmit(e) {
     
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
     renderGallery(data);
-    lightbox.refresh;
+    lightbox.refresh();
     if (data.hits.length === 40) {
       moreBtn.classList.remove('visually-hidden');
     } else {Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");}
