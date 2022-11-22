@@ -1,8 +1,8 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
-// import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// let lightbox = new SimpleLightbox('.gallery a');
+let lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });
 
 const formRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -11,13 +11,27 @@ const moreBtn = document.querySelector('.load-more')
 const URL = 'https://pixabay.com/api/?key=31504710-bca348681cce76d75d9bac8c5';
 let keyGet = ``;
 let page = 1;
-const per_page = 40;
+const perPage = 40;
 
 formRef.addEventListener('input', onInput);
 formRef.addEventListener('submit', onSubmit);
+moreBtn.addEventListener('click', onLoadMore);
 
 function onInput(evt) {
-  keyGet = `q=${evt.target.value.trim()}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${per_page}`;
+  keyGet = `q=${evt.target.value.trim()}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}`;
+}
+
+function onLoadMore() {
+  page += 1;
+  moreBtn.classList.add('visually-hidden');
+  fetchCard().then(data => {
+    renderGallery(data);
+    lightbox.refresh;
+
+    if (data.hits.length === 40) {
+      moreBtn.classList.remove('visually-hidden');
+    } else {Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");}
+  });
 }
 
 function onSubmit(e) {
@@ -38,18 +52,13 @@ function onSubmit(e) {
       nullArray();
       return 
     }
-
-    if (page >= 2) {
-      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-    }
-
-    renderGallery(data);
-    moreBtn.classList.remove('visually-hidden');
     
-    if (data.length <= 40) {
-      moreBtn.classList.add('visually-hidden');
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    }
+    Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+    renderGallery(data);
+    lightbox.refresh;
+    if (data.hits.length === 40) {
+      moreBtn.classList.remove('visually-hidden');
+    } else {Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");}
   });
 }
 
@@ -103,10 +112,6 @@ function renderGallery(data) {
     })
     .join('');
   galleryRef.insertAdjacentHTML('beforeend', markup);
-}
-
-function incrementPage() {
-  this.page += 1;
 }
 
 const nullArray = () => {
