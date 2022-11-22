@@ -46,7 +46,6 @@ a {
 
 .search-form {
   position: relative;
-  /* width: 90px; */
   width: 550px;
   display: flex;
   justify-content: center;
@@ -61,7 +60,8 @@ a {
   transition: width 0.5s;
 } */
 
-.search-line {
+.search-line,
+.load-more {
   padding-top: 10px;
   padding-bottom: 10px;
   border: none;
@@ -86,7 +86,8 @@ a {
   outline: none;
 }
 
-.search-btn {
+.search-btn,
+.load-more {
   height: 45px;
   min-width: 80px;
   cursor: pointer;
@@ -97,7 +98,8 @@ a {
     inset 0px 1px 2px #fff;
 }
 
-.search-form::before {
+.search-form::before,
+.load-more::before {
   content: '';
   position: absolute;
   top: 0;
@@ -109,7 +111,8 @@ a {
   filter: blur(1px);
 }
 
-.search-form::after {
+.search-form::after,
+.load-more::after {
   content: '';
   position: absolute;
   top: 0;
@@ -177,3 +180,9 @@ a {
 /* -------------------------------------------------------------------------- */
 /*                           "Load more" btn styles                           */
 /* -------------------------------------------------------------------------- */
+
+.load-more {
+  position: relative;
+  margin: 20px;
+  padding: 10px 25px;
+}
